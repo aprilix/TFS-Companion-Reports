@@ -79,7 +79,10 @@
             <Value>=Parameters!TeamID.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>DECLARE @DateStart DATETIME
+        <CommandText>--DECLARE @SprintID INT = 3
+--DECLARE @TeamID   INT = 707
+
+DECLARE @DateStart DATETIME
 DECLARE @DateEnd   DATETIME
 DECLARE @NowDate   DATETIME
 DECLARE @MaxWork   FLOAT
@@ -152,7 +155,7 @@ INSERT INTO #tmpChart(
 -- Sprint burndown data
 SELECT 
   c.[Date]
- ,CASE WHEN c.[Date]&gt;@NowDate THEN NULL ELSE SUM(w.RemainingWork) END AS BurnLine
+ ,CASE WHEN c.[Date]&gt;DATEADD(DAY,1,@NowDate) THEN NULL ELSE SUM(w.RemainingWork) END AS BurnLine
 
 FROM dbo.Calendar c
 
@@ -1950,13 +1953,13 @@ WHERE p.WorkItemType = 'Product Backlog Item'
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="PbiAssignedTo1">
+                        <Textbox Name="TaskAssignedTo">
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!PbiAssignedTo.Value</Value>
+                                  <Value>=Fields!TaskAssignedTo.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
@@ -1965,7 +1968,7 @@ WHERE p.WorkItemType = 'Product Backlog Item'
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>PbiAssignedTo1</rd:DefaultName>
+                          <rd:DefaultName>TaskAssignedTo</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
